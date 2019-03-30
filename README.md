@@ -1,5 +1,5 @@
 # Login-Register-app-using-MERN
-Simple Login and register app using MERN stack with JWT authentication
+Simple Login and register app using MERN stack with JWT and Passport
 
 To run the app in the local machine use the following steps :
 
