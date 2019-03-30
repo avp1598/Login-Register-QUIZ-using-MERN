@@ -9,7 +9,8 @@ const cors = require('./cors');
 
 router.use(bodyParser.json());
 
-/* GET users listing. */
+//The below get and delete requests on / endpoint is used only for debugging purposes
+/*
 router.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .get('/', function(req, res, next) {
   User.find({})
@@ -29,6 +30,7 @@ router.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
   }, (err) => next(err))
   .catch((err) => next(err));    
 });
+*/
 
 router.post('/signup', (req, res, next) => {
   User.register(new User({username: req.body.username}), 
