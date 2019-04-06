@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 import axios from 'axios';
 import {Button} from "reactstrap";
+import Test from './testComponent';
+import TestForm from './testFormComponent';
 
 class User extends Component {
     _isMounted = false;
@@ -15,7 +17,7 @@ class User extends Component {
         this.logout=this.logout.bind(this);
     }
 
-    componentDidMount(){
+    componentWillMount(){
         this._isMounted = true;
         const token=localStorage.getItem("token");
         //alert(token);
@@ -50,9 +52,15 @@ class User extends Component {
             state: {auth:this.state.isAuthenticated}
         }}/>)
         return(
-            <div>
-                Hello {this.props.user}<br/>
-                <Button outline color="danger" onClick={this.logout}>Log-out</Button>
+            <div className ="row">
+                <div className="col-sm-6">
+                    Hello {this.props.user}<br/>
+                    <Test/>
+                    <Button outline color="danger" onClick={this.logout}>Log-out</Button>
+                </div>
+                <div className="col-sm-6">
+                    <TestForm/>
+                </div>
             </div>
         );
     }
