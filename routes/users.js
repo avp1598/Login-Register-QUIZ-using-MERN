@@ -66,12 +66,6 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.json({success: true, token: token, status: 'You are successfully logged in!'});
 });
-/*
-function fu(data){
-  console.log("username="+data.user.username);
-}
-*/
-
 router.route('/:userId')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
 .get(cors.cors, authenticate.verifyUser,(req,res,next) => {

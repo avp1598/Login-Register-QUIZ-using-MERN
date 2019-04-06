@@ -35,6 +35,10 @@ const testSchema = new Schema({
         type: String,
         required: true
     },
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     questions:[quesSchema]
 },{
     usePushEach: true

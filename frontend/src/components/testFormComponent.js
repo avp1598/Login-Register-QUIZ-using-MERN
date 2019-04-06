@@ -9,12 +9,12 @@ class TestForm extends Component{
 
         this.state={
             questions:[
-                {
-                    name:"",
-                    a1:{name:"",ans:false},
-                    a2:{name:"",ans:false},
-                    a3:{name:"",ans:false},
-                    a4:{name:"",ans:false}
+                {   
+                    isMultiple:false,
+                    description:"",
+                    answers:[
+                        {description:"",isCorrect:false}
+                    ]
                 }
             ]
         }
@@ -23,61 +23,50 @@ class TestForm extends Component{
         this.handleRemoveQuestion=this.handleRemoveQuestion.bind(this);
         this.handleSubmit=this.handleSubmit.bind(this);
         this.handleAnswerChange=this.handleAnswerChange.bind(this);
+        this.handleAddAnswer=this.handleAddAnswer.bind(this);
+        this.handleRemoveAnswer=this.handleRemoveAnswer.bind(this);
     }
 
     handleSubmit(event){
-        event.preventDefault()
+        event.preventDefault();
+        //alert(JSON.stringify(this.state.questions));
         const token=localStorage.getItem("token");
-        
         var message={
             "number":this.number.value,
             "description":this.description.value,
-            "questions":[]
+            "questions":this.state.questions
         }
         // eslint-disable-next-line array-callback-return
-        this.state.questions.map((ques,idx)=>{
-            message.questions.push({
-                "description":ques.name,
-                "isMultiple":false,
-                "answers":[]
-            })
-            message.questions[idx].answers.push({
-                "description":ques.a1.name,
-                "isCorrect":ques.a1.ans
-            })
-            message.questions[idx].answers.push({
-                "description":ques.a2.name,
-                "isCorrect":ques.a2.ans
-            })
-            message.questions[idx].answers.push({
-                "description":ques.a3.name,
-                "isCorrect":ques.a3.ans
-            })
-            message.questions[idx].answers.push({
-                "description":ques.a4.name,
-                "isCorrect":ques.a4.ans
-            })
-        })
-        
         alert(JSON.stringify(message))
         axios
         .post("https://localhost:3443/tests/",message,{ headers: { Authorization: `Bearer ${token}` }})
         .then(res => alert(res.data.status))
         .catch(err => alert(JSON.stringify(err.response)));
-
         document.getElementById("form").reset();
+        this.setState({
+            questions:[
+                {   
+                    isMultiple:false,
+                    description:"",
+                    answers:[
+                        {description:"",isCorrect:false}
+                    ]
+                }
+            ]
+        })
     }
     handleAddQuestion(){
         //alert(JSON.stringify(this.state))
         this.setState({
             questions: this.state.questions.concat([{
-                name:"",
-                a1:{name:"",ans:false},
-                a2:{name:"",ans:false},
-                a3:{name:"",ans:false},
-                a4:{name:"",ans:false}
-            }])
-          });
+                isMultiple:false,
+                description:"",
+                answers:[
+                    {description:"",isCorrect:false}
+                ]
+            }
+            ])
+        })
     }
     handleRemoveQuestion(idx){
         this.setState({
@@ -87,38 +76,35 @@ class TestForm extends Component{
     handleQuestionNameChange = idx => evt =>{
         const newQuestions = this.state.questions.map((question, sidx) => {
           if (idx !== sidx) return question;
-          return { ...question, name: evt.target.value};
+          return { ...question, description: evt.target.value};
         });
         this.setState({ questions: newQuestions });
     };
-    handleAnswerChange(idx,a,ch){
-        //alert(JSON.stringify("hhhh",ch))
-        const newQuestions = this.state.questions.map((question, sidx) => {
-        if (idx !== sidx) return question;
-        if(a===1){
-            if(ch===1) return { ...question, a1: {name:this.a1.value,ans:!question.a1.ans}};
-            return { ...question, a1: {name:this.a1.value,ans:question.a1.ans}};
-        }
-        if(a===2){
-            if(ch===1) return { ...question, a2: {name:this.a2.value,ans:!question.a2.ans}};
-            return { ...question, a2: {name:this.a2.value,ans:question.a2.ans}};
-            }
-        if(a===3){
-            if(ch===1) return { ...question, a3: {name:this.a3.value,ans:!question.a3.ans}};
-            return { ...question, a3: {name:this.a3.value,ans:question.a3.ans}};
-        }
-        else{
-            if(ch===1) return { ...question, a4: {name:this.a4.value,ans:!question.a4.ans}};
-            return { ...question, a4: {name:this.a4.value,ans:question.a4.ans}};
-        }
-
-        });
+    handleAnswerChange(idx,idxa,ch){
+        const newQuestions=this.state.questions;
+        newQuestions[idx].answers[idxa].description=this.answer.value;
+        if(ch===1) newQuestions[idx].answers[idxa].isCorrect=!newQuestions[idx].answers[idxa].isCorrect
         this.setState({ questions: newQuestions });
     };
+    handleRemoveAnswer(idx,idxa){
+        const newQuestions=this.state.questions;
+        newQuestions[idx].answers.splice(idxa,1)
+        this.setState({ questions: newQuestions });
+    }
+    handleAddAnswer(idx){
+        //alert(JSON.stringify(this.state))
+        const newQuestions=this.state.questions;
+        newQuestions[idx].answers.push({
+            description:"",
+            isCorrect:false
+        })
+        this.setState({ questions: newQuestions });
+    }
+    
     
     render(){
         //alert("D");
-        //alert(JSON.stringify(this.state.questions[0].answers))
+        //alert(JSON.stringify(this.state))
         return(
             <div className="col-sm-6">
                 <Form onSubmit={this.handleSubmit} id="form">
@@ -133,29 +119,19 @@ class TestForm extends Component{
                         <div>
                         <FormGroup>
                         <Label>Question</Label>
-                        <Input type="text" name="Question" placeholder={`Question #${idx + 1}`} value={question.name} 
+                        <Input type="text" name="Question" placeholder={`Question #${idx + 1}`}
                         onChange={this.handleQuestionNameChange(idx)}/>
                         </FormGroup>
-                        <FormGroup>
-                        <Input type="text" name="Answer 1" placeholder="Answer 1" 
-                        onChange={() => {this.handleAnswerChange(idx,1,0)}} innerRef={(input) => this.a1 = input}/>
-                        <CustomInput type="switch" onChange={() => {this.handleAnswerChange(idx,1,1)}}/> Correct
-                        </FormGroup>
-                        <FormGroup>
-                        <Input type="text" name="Answer 2" placeholder="Answer 2"
-                        onChange={() => {this.handleAnswerChange(idx,2,0)}} innerRef={(input) => this.a2 = input}/>
-                        <CustomInput type="switch" onChange={() => {this.handleAnswerChange(idx,2,1)}}/> Correct
-                        </FormGroup>
-                        <FormGroup>
-                        <Input type="text" name="Answer 3" placeholder="Answer 3" 
-                        onChange={() => {this.handleAnswerChange(idx,3,0)}} innerRef={(input) => this.a3 = input}/>
-                        <CustomInput type="switch" onChange={() => {this.handleAnswerChange(idx,3,1)}}/> Correct
-                        </FormGroup>
-                        <FormGroup>
-                        <Input type="text" name="Answer 4" placeholder="Answer 4" 
-                        onChange={() => {this.handleAnswerChange(idx,4,0)}} innerRef={(input) => this.a4 = input}/>
-                        <CustomInput type="switch" onChange={() => {this.handleAnswerChange(idx,4,1)}}/> Correct
-                        </FormGroup>
+                        {question.answers.map((answer,idxa) => (
+                            <div>
+                            <Input type="text" name="Answer" placeholder={`Answer #${idx + 1}`}
+                            onChange={() => {this.handleAnswerChange(idx,idxa,0)}} innerRef={(input) => this.answer = input}/>
+                            <CustomInput type="switch" onChange={() => {this.handleAnswerChange(idx,idxa,1)}} />
+                            <Button onClick={() => {this.handleRemoveAnswer(idx,idxa)}} outline color="danger">-</Button>
+                            </div>
+                        ))}
+                        <Button onClick={() => {this.handleAddAnswer(idx)}} outline color="info">Add Answer + </Button>
+
                         <Button onClick={() => {this.handleRemoveQuestion(idx)}} outline color="danger">-</Button>
                         </div>
                     ))}
