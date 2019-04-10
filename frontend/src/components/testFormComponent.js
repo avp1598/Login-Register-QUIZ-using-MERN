@@ -25,6 +25,7 @@ class TestForm extends Component{
         this.handleAnswerChange=this.handleAnswerChange.bind(this);
         this.handleAddAnswer=this.handleAddAnswer.bind(this);
         this.handleRemoveAnswer=this.handleRemoveAnswer.bind(this);
+        this.handleMultipleChange=this.handleMultipleChange.bind(this);
     }
 
     handleSubmit(event){
@@ -37,7 +38,7 @@ class TestForm extends Component{
             "questions":this.state.questions
         }
         // eslint-disable-next-line array-callback-return
-        alert(JSON.stringify(message))
+        //alert(JSON.stringify(message))
         axios
         .post("https://localhost:3443/tests/",message,{ headers: { Authorization: `Bearer ${token}` }})
         .then(res => alert(res.data.status))
@@ -100,6 +101,11 @@ class TestForm extends Component{
         })
         this.setState({ questions: newQuestions });
     }
+    handleMultipleChange(idx){
+        const newQuestions=this.state.questions;
+        newQuestions[idx].isMultiple=!this.state.questions[idx].isMultiple;
+        this.setState({ questions: newQuestions });
+    }
     
     
     render(){
@@ -121,10 +127,11 @@ class TestForm extends Component{
                         <Label>Question</Label>
                         <Input type="text" name="Question" placeholder={`Question #${idx + 1}`}
                         onChange={this.handleQuestionNameChange(idx)}/>
+                        isMultiple <CustomInput type="switch" onChange={() => {this.handleMultipleChange(idx)}} />
                         </FormGroup>
                         {question.answers.map((answer,idxa) => (
                             <div>
-                            <Input type="text" name="Answer" placeholder={`Answer #${idx + 1}`}
+                            <Input type="text" name="Answer" placeholder="Answer"
                             onChange={() => {this.handleAnswerChange(idx,idxa,0)}} innerRef={(input) => this.answer = input}/>
                             <CustomInput type="switch" onChange={() => {this.handleAnswerChange(idx,idxa,1)}} />
                             <Button onClick={() => {this.handleRemoveAnswer(idx,idxa)}} outline color="danger">-</Button>

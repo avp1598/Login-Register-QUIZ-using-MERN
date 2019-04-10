@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import {Button,Form,FormGroup,Label,Input} from "reactstrap";
 import {Fade, Stagger } from 'react-animation-components';
+import {Redirect} from 'react-router-dom';
+
 
 function RenderAnswer({answer}){
     if(answer.isCorrect) return <div className="text-success">{answer.description}</div>
@@ -62,11 +64,11 @@ class Test extends Component{
         super(props)
 
         this.state={
-            viewOn:false,
-            data:null
+            redirect:false,
+            testnum:null
         }
         this.view=this.view.bind(this);
-        this.handleSubmitView= this.handleSubmitView.bind(this);
+        this.giveTest= this.giveTest.bind(this);
     }
     
 
@@ -82,8 +84,9 @@ class Test extends Component{
             alert(JSON.stringify(err))
         });
     }
-    handleSubmitView(event){
+    giveTest(event){
         event.preventDefault();
+        /*
         const token=localStorage.getItem("token");
         axios
         .get(`https://localhost:3443/tests/${this.test_num.value}`,{ headers: { Authorization: `Bearer ${token}` } })
@@ -97,9 +100,22 @@ class Test extends Component{
         .catch(err => {
             alert("ERRROR",JSON.stringify(err))
         });
+        */
+        this.setState({
+            redirect:true,
+            testnum:this.test_num.value
+        })
+       
     }
 
     render(){
+        let url = window.location.pathname;
+        if(this.state.redirect){
+            return(
+                <Redirect to={`${url}/${this.state.testnum}`}/>
+            )
+        }
+        
         const Test=(test)=>{
             if(this.state.viewOn){
                 //alert(JSON.stringify(test.test.data))
@@ -120,14 +136,14 @@ class Test extends Component{
         }
         return(
             <div>
-                <Form onSubmit={this.handleSubmitView}>
+                <Form onSubmit={this.giveTest}>
                     <FormGroup>
                         <Label for="exampleEmail">Test Number</Label>
                         <Input type="number" name="testnumber" id="testNumber" placeholder="Test number" 
                             innerRef={(input) => this.test_num = input} />
                     </FormGroup>
                     <br/>
-                    <Button outline color="info">View Test</Button>
+                    <Button outline color="info">Give Test</Button>
                 </Form>
                 <Test test={this.state.data} />
                 <br/>

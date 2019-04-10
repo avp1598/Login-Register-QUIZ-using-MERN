@@ -3,6 +3,7 @@ import Header from "./headerComponent";
 import User from "./userComponent"
 import React, { Component } from 'react';
 import { Switch, Route, Redirect,withRouter} from 'react-router-dom';
+import TakeTest from "./takeTestComponent";
 
 class Main extends Component{
     render(){
@@ -10,6 +11,11 @@ class Main extends Component{
         const Userwithid=({match})=>{
             return(
                 <User user={match.params.userid}/>
+            )
+        }
+        const TakeTestId=({match})=>{
+            return(
+                <TakeTest testid={match.params.testid}/>
             )
         }
         var msg="";
@@ -20,7 +26,8 @@ class Main extends Component{
                 <Header />
                 <Switch location={this.props.location}>
                     <Route exact path='/home' component={() => <Login />} />
-                    <Route path='/:userid' component={Userwithid} />
+                    <Route exact path='/users/:userid' component={Userwithid} />
+                    <Route exact path='/users/:userid/:testid' component={TakeTestId} />
                     <Redirect to="/home" />
                 </Switch>
                 <p className="text-danger lg">{msg}</p>

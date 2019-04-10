@@ -30,6 +30,7 @@ export default class Login extends Component {
         .post("https://localhost:3443/users/login",message)
         .then(res => {
             localStorage.setItem("token",res.data.token);
+            localStorage.setItem("user",this.l_username.value);
             this.setState(() => ({
                 isauthenticated: true
               }));
@@ -61,7 +62,7 @@ export default class Login extends Component {
             return(<Redirect to="/home" />)
         }
         if(this.state.isauthenticated){
-            return(<Redirect to = {`/${this.l_username.value}`} />)
+            return(<Redirect to = {`/users/${this.l_username.value}`} />)
         }
         return (
             <div className ="row">

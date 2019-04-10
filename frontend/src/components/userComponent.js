@@ -42,6 +42,7 @@ class User extends Component {
 
     logout(){
         localStorage.setItem("token","");
+        localStorage.setItem("user","");
         this.setState(() => ({
             isAuthenticated:2
           }));
