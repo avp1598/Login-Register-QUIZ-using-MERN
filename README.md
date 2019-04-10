@@ -1,5 +1,7 @@
-# Login-Register-app-using-MERN
-Simple Login and register app using MERN stack with JWT and Passport
+# Login-Register-QUIZ-app-using-MERN
+Simple Login and register QUIZ app using MERN stack with JWT and Passport
+
+Users can sign in and add tests with multiple questions and answers using dynamic input forms
 
 To run the app in the local machine use the following steps :
 
