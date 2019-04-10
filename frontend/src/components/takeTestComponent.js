@@ -42,7 +42,7 @@ class TakeTest extends Component{
         let elem = e.currentTarget;
         let updatedClassNames = this.state.cname;
         let answer = Number(elem.dataset.id);
-        updatedClassNames[answer]='right';
+        updatedClassNames[answer]='selected';
 
         let sel = this.state.selected;
         sel.push(answer);

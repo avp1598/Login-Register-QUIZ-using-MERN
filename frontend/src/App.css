@@ -1,8 +1,3 @@
-.selected{
-  border-color: #c9cc0f;
-  color: #c9cc0f;
-}
-
 body {
   background-color: #e4e4e4;
 font-family: Open Sans;
@@ -82,29 +77,8 @@ font-family: Open Sans;
   transform: scale(1.03);
 }
 
-#answers li.right {
+#answers li.selected {
   border-color: #ddee48;
-}
-
-#answers li.right span {
-  background-color: #1ea55b;
-}
-
-#answers li.right p {
-  color: #1ea55b;
-}
-
-#answers li.wrong {
-  border-color: #dc0a0a;
-  color: #dc0a0a;
-}
-
-#answers li.wrong span {
-  background-color: #dc0a0a;
-}
-
-#answers li.wrong p {
-  color: #dc0a0a;
 }
 
 #submit {
