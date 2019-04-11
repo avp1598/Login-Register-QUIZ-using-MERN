@@ -21,7 +21,10 @@ connect.then((db) => {
     console.log("Connected correctly to server");
 }, (err) => { console.log(err); });
 
+
+var port = process.env.PORT || 5000;
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -47,6 +50,9 @@ app.all('*', (req, res, next) => {
     res.redirect(307, 'https://' + req.hostname + ':' + app.get('secPort') + req.url);
   }
 });
+app.get('/', function (req, res) {
+  res.send(JSON.stringify({ Hello: 'World'}));
+ });
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
