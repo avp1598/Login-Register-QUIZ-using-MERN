@@ -40,6 +40,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+/*
 app.all('*', (req, res, next) => {
   if (req.secure) {
     return next();
@@ -48,6 +49,7 @@ app.all('*', (req, res, next) => {
     res.redirect(307, 'https://' + req.hostname + ':' + app.get('secPort') + req.url);
   }
 });
+*/
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/tests', testsRouter);
