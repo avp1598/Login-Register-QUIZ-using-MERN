@@ -48,9 +48,6 @@ app.all('*', (req, res, next) => {
     res.redirect(307, 'https://' + req.hostname + ':' + app.get('secPort') + req.url);
   }
 });
-app.get('/', function (req, res) {
-  res.send(JSON.stringify({ Hello: 'World'}));
- });
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/tests', testsRouter);
