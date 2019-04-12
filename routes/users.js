@@ -42,6 +42,7 @@ router.post('/signup', (req, res, next) => {
     }
     else {
       if (req.body.mail) user.mail = req.body.mail;
+      user.teacher=req.body.teacher 
       user.save((err, user) => {
         if (err) {
           res.statusCode = 500;
