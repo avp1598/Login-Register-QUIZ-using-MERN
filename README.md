@@ -1,6 +1,6 @@
 # Login-Register-QUIZ-app-using-MERN
 
-# Hosted at : https://quiz-auth-app.herokuapp.com/
+# Hosted at : https://quiz-auth-app.herokuapp.com/ (outdated)
 Simple Login and register QUIZ app using MERN stack with JWT and Passport
 
 Users can sign in and add tests with multiple questions and answers using dynamic input forms
